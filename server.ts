@@ -43,7 +43,8 @@ const addViteMiddlewares = async (app: Express) => {
         .replace(`<!--app-css-->`, emotionCss)
         .replace(`{ /** app-state */ }`, JSON.stringify(storesValues));
 
-      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+      res.status(200).set({ "Content-Type": "text/html" })
+.end(html);
     } catch (error) {
       // If an error is caught, let Vite fix the stack trace so it maps back to
       // your actual source code.

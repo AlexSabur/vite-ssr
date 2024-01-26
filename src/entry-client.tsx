@@ -1,14 +1,14 @@
-import { StrictMode } from "react";
-import { hydrateRoot } from "react-dom/client";
-import App, { appStarted } from "./app";
-import { allSettled, fork } from "effector";
-import { Provider } from "effector-react";
-import createEmotionCache from "./shared/emotion";
-import theme from "./shared/theme";
-import { CacheProvider } from "@emotion/react";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { StrictMode } from 'react';
+import { hydrateRoot } from 'react-dom/client';
+import App, { appStarted } from './app';
+import { allSettled, fork } from 'effector';
+import { Provider } from 'effector-react';
+import createEmotionCache from './shared/emotion';
+import theme from './shared/theme';
+import { CacheProvider } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
-import.meta.glob(["./assets/**/*"], { eager: true, as: "url" });
+import.meta.glob(['./assets/**/*'], { eager: true, as: 'url' });
 
 async function hydrate() {
   const cache = createEmotionCache();
@@ -20,7 +20,7 @@ async function hydrate() {
   });
 
   hydrateRoot(
-    document.getElementById("root")!,
+    document.getElementById('root')!,
     <StrictMode>
       <Provider value={clientScope}>
         <CacheProvider value={cache}>
@@ -30,7 +30,7 @@ async function hydrate() {
           </ThemeProvider>
         </CacheProvider>
       </Provider>
-    </StrictMode>
+    </StrictMode>,
   );
 
   await allSettled(appStarted, {

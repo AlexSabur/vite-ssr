@@ -1,19 +1,18 @@
-import { renderToString } from "react-dom/server";
-import { StrictMode } from "react";
-import { Request } from "express";
-import App, { $pathname, appStarted } from "./app";
-import { allSettled, fork, serialize } from "effector";
-import { Provider } from "effector-react";
-import createEmotionCache from "./shared/emotion";
-import createEmotionServer from "@emotion/server/create-instance";
-import { CacheProvider } from "@emotion/react";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import theme from "./shared/theme";
+import { renderToString } from 'react-dom/server';
+import { StrictMode } from 'react';
+import { Request } from 'express';
+import App, { $pathname, appStarted } from './app';
+import { allSettled, fork, serialize } from 'effector';
+import { Provider } from 'effector-react';
+import createEmotionCache from './shared/emotion';
+import createEmotionServer from '@emotion/server/create-instance';
+import { CacheProvider } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import theme from './shared/theme';
 
 export async function render(req: Request) {
   const cache = createEmotionCache();
-  const { extractCriticalToChunks, constructStyleTagsFromChunks } =
-    createEmotionServer(cache);
+  const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache);
 
   const scope = fork({
     values: [
@@ -42,7 +41,7 @@ export async function render(req: Request) {
           </ThemeProvider>
         </CacheProvider>
       </Provider>
-    </StrictMode>
+    </StrictMode>,
   );
 
   const emotionChunks = extractCriticalToChunks(renderTemplate);

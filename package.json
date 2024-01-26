@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vavite serve",
     "build": "tsc && vavite build",
+    "serve": "NODE_ENV=production node dist/server",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix --ext ts,tsx",
+    "preview": "vite preview",
+    "prettier": "prettier src --check",
+    "prettier:fix": "yarn prettier --write",
+    "format": "yarn prettier:fix && yarn lint:fix"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -15,6 +20,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
+    "@softmg/effector-react-form": "^4.0.9",
     "atomic-router-react": "^0.9.1",
     "effector": "^23.1.0",
     "effector-react": "^23.1.0",
@@ -32,8 +38,10 @@
     "@typescript-eslint/parser": "^6.19.1",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "prettier": "^3.2.4",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
   }
