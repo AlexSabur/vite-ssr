@@ -34,6 +34,7 @@ export default defineConfig(() => ({
           ["effector/babel-plugin", { addLoc: true }],
           "@emotion/babel-plugin",
         ],
+        presets: ["atomic-router/babel-preset"],
       },
     }),
     vavite({

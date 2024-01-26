@@ -1,14 +1,15 @@
 import { Button } from '@mui/material';
-import { createEvent, createStore, createEffect, sample, combine } from 'effector';
+import { combine, createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react';
 import { Form } from './form.tsx';
+import { appStarted } from '../shared/config/init.ts';
+import { RouterProvider } from 'atomic-router-react';
+import { router } from '../shared/routing.ts';
+import { Pages } from '../pages';
 
 const sleep = (timeout: number) => new Promise((resolve) => setTimeout(resolve, timeout));
 
 // model
-export const appStarted = createEvent();
-export const $pathname = createStore<string | null>(null);
-
 const $counter = createStore<number | null>(null);
 
 const fetchUserCounterFx = createEffect(async () => {
@@ -44,7 +45,7 @@ sample({
 const $countUpdatePending = combine([fetchUserCounterFx.pending, saveUserCounterFx.pending], (updates) =>
   updates.some((upd) => upd),);
 
-const $isClient = createStore(typeof document !== 'undefined', {
+const $isClient = createStore(!import.meta.env.SSR, {
   /**
    * Here we're explicitly telling effector, that this store, which depends on the environment,
    * should be never included in serialization
@@ -88,6 +89,9 @@ function App() {
       <h2>{updatePending ? 'Counter is updating' : `Current count is ${count ?? 'unknown'}`}</h2>
       <Button onClick={() => clickButton()}>Update counter</Button>
       <Form />
+      <RouterProvider router={router}>
+        <Pages />
+      </RouterProvider>
     </div>
   );
 }

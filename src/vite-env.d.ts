@@ -1,3 +1,3 @@
 /// <reference types="vite/client" />
 
-declare let INITIAL_STATE: Record<string, unknown>;
+declare let _SERVER_STATE_: Record<string, unknown>;
