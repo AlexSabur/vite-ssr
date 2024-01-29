@@ -38,20 +38,20 @@ export const router = createHistoryRouter({
 });
 
 export const $status = createStore(200)
-  .on(router.routeNotFound, () => 404)
+  .on(router.routeNotFound, () => 404);
 
 const $history = createStore<History>(null as never, {
   serialize: 'ignore',
-})
+});
 
 sample({
   clock: appStarted,
   source: $pathname,
   fn: (pathname) => import.meta.env.SSR ? createMemoryHistory({
-    initialEntries: [pathname]
+    initialEntries: [pathname],
   }) : createBrowserHistory(),
   target: $history,
-})
+});
 
 sample({
   clock: appStarted,
