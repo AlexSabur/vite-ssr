@@ -35,7 +35,7 @@ const addViteMiddlewares = async (app: Express) => {
       // 4. render the app HTML. This assumes entry-server.js's exported `render`
       //    function calls appropriate framework SSR APIs,
       //    e.g. ReactDOMServer.renderToString()
-      const { renderTemplate, storesValues, emotionCss } = await render(req);
+      const { renderTemplate, storesValues, emotionCss, status } = await render(req);
 
       // 5. Inject the app-rendered HTML into the template.
       const html = template
@@ -43,8 +43,7 @@ const addViteMiddlewares = async (app: Express) => {
         .replace(`<!--app-css-->`, emotionCss)
         .replace(`{ /** app-state */ }`, JSON.stringify(storesValues));
 
-      res.status(200).set({ "Content-Type": "text/html" })
-.end(html);
+      res.status(status).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {
       // If an error is caught, let Vite fix the stack trace so it maps back to
       // your actual source code.

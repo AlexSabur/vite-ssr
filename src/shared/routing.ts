@@ -1,6 +1,10 @@
-import { createHistoryRouter, createRoute, createRouterControls } from 'atomic-router';
-import { createEffect, sample } from 'effector';
-import { createBrowserHistory, createMemoryHistory } from 'history';
+import {
+  createHistoryRouter,
+  createRoute,
+  createRouterControls,
+} from 'atomic-router';
+import { createStore, sample } from 'effector';
+import { createBrowserHistory, createMemoryHistory, History } from 'history';
 import { $pathname, appStarted } from './config/init.ts';
 
 export const routes = {
@@ -9,6 +13,7 @@ export const routes = {
     register: createRoute(),
     login: createRoute(),
   },
+  notFoundRoute: createRoute(),
 };
 
 export const controls = createRouterControls();
@@ -28,25 +33,28 @@ export const router = createHistoryRouter({
       route: routes.search,
     },
   ],
+  notFoundRoute: routes.notFoundRoute,
   controls,
 });
 
-const history = import.meta.env.SSR ? createMemoryHistory() : createBrowserHistory();
+export const $status = createStore(200)
+  .on(router.routeNotFound, () => 404)
 
-const historyPushFx = createEffect(({ to, state }: { to: string | null; state?: object }) => {
-  history.push(to!, state);
-});
+const $history = createStore<History>(null as never, {
+  serialize: 'ignore',
+})
 
 sample({
   clock: appStarted,
   source: $pathname,
-  filter: () => import.meta.env.SSR,
-  fn: (pathname) => ({ to: pathname }),
-  target: historyPushFx,
-});
+  fn: (pathname) => import.meta.env.SSR ? createMemoryHistory({
+    initialEntries: [pathname]
+  }) : createBrowserHistory(),
+  target: $history,
+})
 
 sample({
   clock: appStarted,
-  fn: () => history,
+  source: $history,
   target: router.setHistory,
 });

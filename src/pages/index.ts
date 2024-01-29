@@ -6,7 +6,7 @@ import { SearchRoute } from './search';
 
 export const Pages = createRoutesView({
   routes: [SearchRoute, LoginRoute, RegisterRoute],
-  otherwise() {
-    return `<div>Page not found!</div>;`;
-  },
+  // otherwise() {
+  //   return `<div>Page not found!</div>;`;
+  // },
 });

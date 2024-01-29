@@ -10,6 +10,7 @@ import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './shared/theme';
 import { $pathname, appStarted } from './shared/config/init.ts';
+import { $status } from './shared/routing.ts';
 
 export async function render(req: Request) {
   const cache = createEmotionCache();
@@ -28,6 +29,9 @@ export async function render(req: Request) {
   await allSettled(appStarted, {
     scope,
   });
+
+  const status = scope.getState($status);
+  console.log(status);
 
   // 3. Serialize the calculated state, so it can be passed over the network
   const storesValues = serialize(scope);
@@ -48,5 +52,5 @@ export async function render(req: Request) {
   const emotionChunks = extractCriticalToChunks(renderTemplate);
   const emotionCss = constructStyleTagsFromChunks(emotionChunks);
 
-  return { renderTemplate, storesValues, emotionCss };
+  return { renderTemplate, storesValues, emotionCss, status };
 }
