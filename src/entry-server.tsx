@@ -31,7 +31,6 @@ export async function render(req: Request) {
   });
 
   const status = scope.getState($status);
-  console.log(status);
 
   // 3. Serialize the calculated state, so it can be passed over the network
   const storesValues = serialize(scope);
