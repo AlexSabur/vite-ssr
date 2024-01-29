@@ -1,23 +1,23 @@
-import express, { Express } from "express";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import fs from "node:fs";
-import httpDevServer from "vavite/http-dev-server";
-import viteDevServer from "vavite/vite-dev-server";
+import express, { Express } from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
+import httpDevServer from 'vavite/http-dev-server';
+import viteDevServer from 'vavite/vite-dev-server';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const resolve = (...paths: string[]) => path.resolve(__dirname, ...paths);
 const isProduction = import.meta.env.PROD;
 
 const addViteMiddlewares = async (app: Express) => {
-  app.use("*", async (req, res, next) => {
+  app.use('*', async (req, res, next) => {
     const url = req.originalUrl;
 
     try {
       // 1. Read index.html
       let template = fs.readFileSync(
-        isProduction ? resolve("../client/index.html") : resolve("index.html"),
-        "utf-8"
+        isProduction ? resolve('../client/index.html') : resolve('index.html'),
+        'utf-8',
       );
 
       // 2. Apply Vite HTML transforms. This injects the Vite HMR client, and
@@ -30,7 +30,7 @@ const addViteMiddlewares = async (app: Express) => {
       // 3. Load the server entry. vite.ssrLoadModule automatically transforms
       //    your ESM source code to be usable in Node.js! There is no bundling
       //    required, and provides efficient invalidation similar to HMR.
-      const { render } = await import("./src/entry-server.js");
+      const { render } = await import('./src/entry-server.js');
 
       // 4. render the app HTML. This assumes entry-server.js's exported `render`
       //    function calls appropriate framework SSR APIs,
@@ -43,7 +43,10 @@ const addViteMiddlewares = async (app: Express) => {
         .replace(`<!--app-css-->`, emotionCss)
         .replace(`{ /** app-state */ }`, JSON.stringify(storesValues));
 
-      res.status(status).set({ "Content-Type": "text/html" }).end(html);
+      res
+        .status(status)
+        .set({ 'Content-Type': 'text/html' })
+        .end(html);
     } catch (error) {
       // If an error is caught, let Vite fix the stack trace so it maps back to
       // your actual source code.
@@ -63,8 +66,8 @@ async function createServer() {
 
   if (isProduction) {
     app.use(
-      "/assets",
-      express.static(path.resolve(__dirname, "dist/client/assets"))
+      '/assets',
+      express.static(path.resolve(__dirname, 'dist/client/assets')),
     );
 
     // app.use("*", async (_, res, ) => {
@@ -73,7 +76,7 @@ async function createServer() {
   }
 
   if (viteDevServer) {
-    httpDevServer!.on("request", app);
+    httpDevServer!.on('request', app);
 
     return;
   }
